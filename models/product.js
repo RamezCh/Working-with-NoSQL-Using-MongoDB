@@ -20,3 +20,6 @@ const productSchema = new Schema({
     required: true,
   },
 });
+
+// model is to connect Schema with a name
+module.exports = mongoose.model('Product', productSchema);
