@@ -5,6 +5,7 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     editing: false,
+    isAuthenticated: req.isLoggedIn
   });
 };
 
@@ -18,7 +19,7 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
-    userId: req.user, // we can store entire object and mongoose picks id from it
+    userId: req.user
   });
   product
     .save()
@@ -48,6 +49,7 @@ exports.getEditProduct = (req, res, next) => {
         path: '/admin/edit-product',
         editing: editMode,
         product: product,
+        isAuthenticated: req.isLoggedIn
       });
     })
     .catch(err => console.log(err));
@@ -78,17 +80,14 @@ exports.postEditProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   Product.find()
     // .select('title price -_id')
-    // select allows us to choose which fields to retrieve from DB, they are separated by space and doing - excludes a field
     // .populate('userId', 'name')
-    // populate allows us to get entire object for example entire user info by doing populate('userId')
-    // we can also limit w hat to get from populate
-    // Populate for other Models, select for current Model
     .then(products => {
       console.log(products);
       res.render('admin/products', {
         prods: products,
         pageTitle: 'Admin Products',
         path: '/admin/products',
+        isAuthenticated: req.isLoggedIn
       });
     })
     .catch(err => console.log(err));
